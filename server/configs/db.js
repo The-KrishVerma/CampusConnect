@@ -14,10 +14,8 @@ const connectDB = async () => {
   if (!cached.promise) {
     mongoose.connection.on('connected', () => console.log("Database Connected"));
     
-    // If MONGODB_URI already has the db name, don't append it again
-    const uri = process.env.MONGODB_URI?.includes('mongodb.net/') && !process.env.MONGODB_URI.endsWith('/') && !process.env.MONGODB_URI.includes('?') 
-                ? `${process.env.MONGODB_URI}/announcement`
-                : process.env.MONGODB_URI || '';
+    // Connect directly to the provided URI
+    const uri = process.env.MONGODB_URI || '';
 
     cached.promise = mongoose.connect(uri).then((mongoose) => mongoose);
   }
