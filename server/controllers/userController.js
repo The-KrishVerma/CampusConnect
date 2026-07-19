@@ -160,6 +160,17 @@ export const loginUser = async (req, res) => {
             return res.json({success: false, message: "Missing required fields"});
         }
 
+        // Admin check
+        if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
+            const token = jwt.sign({email, role: 'admin'}, process.env.JWT_SECRET, {expiresIn: '7d'});
+            return res.json({
+                success: true,
+                token,
+                role: 'admin',
+                user: { id: 'admin', name: 'Admin', email }
+            });
+        }
+
         const user = await User.findOne({email: email.toLowerCase().trim()});
         if (!user || !verifyPassword(password, user.passwordHash)) {
             return res.json({success: false, message: "Invalid credentials"});

@@ -1,16 +1,16 @@
 import fs from 'fs'
 import imagekit from '../configs/imageKit.js';
-import Blog from '../models/Blog.js';
+import Announcement from '../models/Announcement.js';
 import Comment from '../models/Comment.js';
 import main from '../configs/gemini.js'
 
-export const addBlog = async (req, res) => {
+export const addAnnouncement = async (req, res) => {
     try {
-        const{title, subTitle, description, category, isPublished} = JSON.parse
-        (req.body.blog);
+        const{title, subTitle, description, isPublished} = JSON.parse
+        (req.body.announcement);
         const imageFile = req.file;
 
-        if(!title || !description || !category || !imageFile) {
+        if(!title || !description || !imageFile) {
             return res.json({success: false, message: "Missing required fields" })
         }
 
@@ -19,7 +19,7 @@ export const addBlog = async (req, res) => {
         const response = await imagekit.upload({
             file: fileBuffer,
             fileName: imageFile.originalname,
-            folder: "/blogs"
+            folder: "/announcements"
         })
 
         const optimizedImageUrl = imagekit.url({
@@ -32,9 +32,9 @@ export const addBlog = async (req, res) => {
         });
 
         const image = optimizedImageUrl;
-        await Blog.create({title, subTitle, description, category, image, isPublished})
+        await Announcement.create({title, subTitle, description, image, isPublished})
 
-        res.json({success: true, message: "Blog added successfully"})
+        res.json({success: true, message: "Announcement added successfully"})
 
     } catch (error) {
         res.json({success: false, message: error.message})
@@ -42,35 +42,35 @@ export const addBlog = async (req, res) => {
     }
 }
 
-export const getAllBlogs = async (req, res) => {
+export const getAllAnnouncements = async (req, res) => {
     try {
-        const blogs = await Blog.find({isPublished: true})
-        res.json({success: true, blogs})
+        const announcements = await Announcement.find({isPublished: true})
+        res.json({success: true, announcements})
     }catch (error) {
         res.json({success:false, message: error.message})
     }
 }
 
-export const getBlogById = async (req,res) => {
+export const getAnnouncementById = async (req,res) => {
     try {
-        const {blogId} = req.params;
-        const blog = await Blog.findById(blogId)
-        if(!blog) {
-            return res.json({ success: false, message: "Blog not found" })
+        const {announcementId} = req.params;
+        const announcement = await Announcement.findById(announcementId)
+        if(!announcement) {
+            return res.json({ success: false, message: "Announcement not found" })
         }
-        res.json({success: true, blog})
+        res.json({success: true, announcement})
     } catch(error) {
         return res.json({ success: false, message: error.message })
 
     }
 }
 
-export const deleteBlogById = async (req,res) => {
+export const deleteAnnouncementById = async (req,res) => {
     try {
         const {id} = req.body;
-        await Blog.findByIdAndDelete(id);
-        await Comment.deleteMany({blog: id});
-        res.json({ success: true, message: "Blog deleted successfully" })
+        await Announcement.findByIdAndDelete(id);
+        await Comment.deleteMany({announcement: id});
+        res.json({ success: true, message: "Announcement deleted successfully" })
     } catch(error) {
         res.json({ success: false, message: error.message })
     }
@@ -78,23 +78,35 @@ export const deleteBlogById = async (req,res) => {
 export const togglePublish = async (req, res) => {
     try {
         const {id}= req.body;
-        const blog = await Blog.findById(id);
-        blog.isPublished = !blog.isPublished;
-        await blog.save();
-        res.json({success: true, message: 'Blog status updated'})
+        const announcement = await Announcement.findById(id);
+        announcement.isPublished = !announcement.isPublished;
+        await announcement.save();
+        res.json({success: true, message: 'Announcement status updated'})
     } catch (error) {
         res.json({success: false, message: error.message})
     }
 }
 
-export const updateBlogById = async (req, res) => {
+export const togglePin = async (req, res) => {
     try {
-        const {id, title, subTitle, description, category, isPublished} = req.body;
+        const {id} = req.body;
+        const announcement = await Announcement.findById(id);
+        announcement.isPinned = !announcement.isPinned;
+        await announcement.save();
+        res.json({success: true, message: announcement.isPinned ? 'Announcement Pinned' : 'Announcement Unpinned'})
+    } catch (error) {
+        res.json({success: false, message: error.message})
+    }
+}
+
+export const updateAnnouncementById = async (req, res) => {
+    try {
+        const {id, title, subTitle, description, isPublished} = req.body;
         const update = {};
         if (title) update.title = title;
         if (subTitle !== undefined) update.subTitle = subTitle;
         if (description) update.description = description;
-        if (category) update.category = category;
+
         if (isPublished !== undefined) {
             update.isPublished = typeof isPublished === 'boolean'
                 ? isPublished
@@ -106,7 +118,7 @@ export const updateBlogById = async (req, res) => {
             const response = await imagekit.upload({
                 file: fileBuffer,
                 fileName: req.file.originalname,
-                folder: "/blogs"
+                folder: "/announcements"
             });
             const optimizedImageUrl = imagekit.url({
                 path: response.filePath,
@@ -119,11 +131,11 @@ export const updateBlogById = async (req, res) => {
             update.image = optimizedImageUrl;
         }
 
-        const blog = await Blog.findByIdAndUpdate(id, update, {new: true});
-        if (!blog) {
-            return res.json({success: false, message: "Blog not found"});
+        const announcement = await Announcement.findByIdAndUpdate(id, update, {new: true});
+        if (!announcement) {
+            return res.json({success: false, message: "Announcement not found"});
         }
-        res.json({success: true, message: "Blog updated", blog});
+        res.json({success: true, message: "Announcement updated", announcement});
     } catch (error) {
         res.json({success: false, message: error.message});
     }
@@ -131,18 +143,18 @@ export const updateBlogById = async (req, res) => {
 
 export const addComment = async(req, res) => {
     try {
-        const{blog, name, content}= req.body;
-        await Comment.create({blog, name, content});
+        const{announcement, name, content}= req.body;
+        await Comment.create({announcement, name, content});
         res.json({success: true, message: 'Comment added for review'})
     } catch(error) {
         res.json({success: false, message: error.message})
     }
 }
 
-export const getBlogComments = async(req, res) => {
+export const getAnnouncementComments = async(req, res) => {
     try {
-        const{blogId} = req.body;
-        const comments = await Comment.find({blog: blogId, isApproved: true}).sort({createdAt: -1});
+        const{announcementId} = req.body;
+        const comments = await Comment.find({announcement: announcementId, isApproved: true}).sort({createdAt: -1});
         res.json({success: true, comments})
     } catch(error) {
         res.json({success: false, message: error.message})
@@ -155,7 +167,7 @@ export const generateContent = async (req,res) => {
             return res.json({success: false, message: 'Gemini API key is missing in environment variables.'});
         }
         const {prompt} = req.body;
-        const content = await main(`${prompt}. Generate a blog content for this topic in simple text format.`)
+        const content = await main(`${prompt}. Generate a announcement content for this topic in simple text format.`)
         res.json({success: true, content})
     } catch (error) { 
         // Provide a clear message when API quota is exhausted or rate-limited

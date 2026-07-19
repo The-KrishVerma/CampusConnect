@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken'
-import Blog from '../models/Blog.js';
+import Announcement from '../models/Announcement.js';
 import Comment from '../models/Comment.js';
-import NewsletterSubscriber from '../models/NewsletterSubscriber.js';
 
 
 export const adminLogin = async(req, res) => {
@@ -19,10 +18,10 @@ export const adminLogin = async(req, res) => {
     }
 }
 
-export const getAllBlogsAdmin = async(req, res) => {
+export const getAllAnnouncementsAdmin = async(req, res) => {
     try {
-        const blogs = await Blog.find({}).sort({createdAt: -1});
-        res.json({success: true, blogs})
+        const announcements = await Announcement.find({}).sort({createdAt: -1});
+        res.json({success: true, announcements})
     }catch(error) { 
         res.json({success: false, message: error.message})
     }
@@ -30,7 +29,7 @@ export const getAllBlogsAdmin = async(req, res) => {
 
 export const getAllComments = async(req, res) => {
     try {
-        const comments = await Comment.find({}).populate("blog").sort({createdAt: -1});
+        const comments = await Comment.find({}).populate("announcement").sort({createdAt: -1});
         res.json({success: true, comments})
     }catch(error) { 
         res.json({success: false, message: error.message})
@@ -39,15 +38,14 @@ export const getAllComments = async(req, res) => {
 
 export const getDashboard = async(req, res) => {
     try {
-        const recentBlogs = await Blog.find({}).sort({createdAt: -1}).limit(5);
-        const blogs = await Blog.countDocuments();
+        const recentAnnouncements = await Announcement.find({}).sort({createdAt: -1}).limit(5);
+        const announcements = await Announcement.countDocuments();
         const comments = await Comment.countDocuments()
         const pendingComments = await Comment.countDocuments({isApproved: false})
-        const subscribers = await NewsletterSubscriber.countDocuments()
-        const drafts = await Blog.countDocuments({isPublished: false})
+        const drafts = await Announcement.countDocuments({isPublished: false})
 
         const dashboardData = {
-            blogs, comments, drafts, recentBlogs, pendingComments, subscribers
+            announcements, comments, drafts, recentAnnouncements, pendingComments
         }
 
         res.json({success: true, dashboardData})

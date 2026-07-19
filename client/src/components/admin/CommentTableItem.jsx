@@ -4,8 +4,8 @@ import { useAppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
 
 const CommentTableItem = ({ comment, fetchComments }) => {
-  const { blog, createdAt, _id, name, content, isApproved } = comment;
-  const blogDate = new Date(createdAt);
+  const { announcement, createdAt, _id, name, content, isApproved } = comment;
+  const announcementDate = new Date(createdAt);
   const { axios } = useAppContext();
 
   const approveComment = async () => {
@@ -42,7 +42,7 @@ const CommentTableItem = ({ comment, fetchComments }) => {
     <tr className='bg-gray-800 border-b border-gray-700 hover:bg-gray-700 transition-colors duration-200'>
       <td className='px-6 py-4'>
         <p className='font-semibold text-gray-300'>
-          <span className='font-medium text-gray-400'>Blog:</span> {blog?.title || 'Deleted blog'}
+          <span className='font-medium text-gray-400'>Announcement:</span> {announcement?.title || 'Deleted announcement'}
         </p>
         <p className='text-sm text-gray-400 mt-2'>
           <span className='font-medium text-gray-300'>Name:</span> {name}
@@ -52,7 +52,7 @@ const CommentTableItem = ({ comment, fetchComments }) => {
         </p>
       </td>
       <td className='px-6 py-4 max-sm:hidden align-top text-gray-400'>
-        {blogDate.toLocaleDateString()}
+        {announcementDate.toLocaleDateString()}
       </td>
       <td className='px-6 py-4 align-top'>
         <div className='inline-flex items-center gap-4'>

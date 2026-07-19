@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const commentSchema = new mongoose.Schema({
-    blog: {type: mongoose.Schema.Types.ObjectId, ref: 'blog', required: true},
+    announcement: {type: mongoose.Schema.Types.ObjectId, ref: 'announcement', required: true},
     name: {type: String, required: true},
     content: {type: String, required: true},
     isApproved: {type: Boolean, default: false},

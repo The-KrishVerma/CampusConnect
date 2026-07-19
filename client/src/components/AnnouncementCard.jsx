@@ -1,13 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const BlogCard = ({ blog }) => {
-  const { title, description, category, image, _id } = blog;
+const AnnouncementCard = ({ announcement }) => {
+  const { title, description, category, image, _id } = announcement;
   const navigate = useNavigate();
 
   return (
     <div
-      onClick={() => navigate(`/blog/${_id}`)}
+      onClick={() => navigate(`/announcement/${_id}`)}
       className="w-full rounded-lg overflow-hidden bg-gray-800 border border-gray-700 hover:shadow-lg hover:shadow-primary/25 duration-300 cursor-pointer group"
     >
       <img src={image} alt="" className="aspect-video group-hover:scale-105 transition-transform duration-300" />
@@ -20,4 +20,4 @@ const BlogCard = ({ blog }) => {
   );
 };
 
-export default BlogCard;
+export default AnnouncementCard;

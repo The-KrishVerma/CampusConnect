@@ -1,5 +1,5 @@
 const baseTemplate = ({title, body, actionText, actionUrl, code}) => {
-    const appName = process.env.APP_NAME || 'CampusVoice';
+    const appName = process.env.APP_NAME || 'CampusConnect';
     const logoText = appName;
     const preview = `${appName} security code`;
     return `
@@ -53,7 +53,7 @@ const baseTemplate = ({title, body, actionText, actionUrl, code}) => {
 export const verificationEmail = ({name, code}) => {
     const appUrl = process.env.APP_URL || 'http://localhost:5173';
     return baseTemplate({
-        title: `Verify your ${process.env.APP_NAME || 'CampusVoice'} account`,
+        title: `Verify your ${process.env.APP_NAME || 'CampusConnect'} account`,
         body: `Hi ${name || 'there'}, use the code below to verify your email. It expires in 10 minutes.`,
         actionText: 'Verify Email',
         actionUrl: `${appUrl}/verify-email`,

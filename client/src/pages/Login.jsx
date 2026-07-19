@@ -17,9 +17,14 @@ const UserLogin = () => {
       const { data } = await axios.post('/api/user/login', { email, password });
       if (data.success) {
         setAuth(data.token, data.role || 'user');
-        await fetchMe();
-        toast.success('Welcome back!');
-        navigate('/');
+        if (data.role === 'admin') {
+          toast.success('Welcome Admin!');
+          navigate('/admin');
+        } else {
+          await fetchMe();
+          toast.success('Welcome back!');
+          navigate('/');
+        }
       } else {
         if (data.message?.toLowerCase().includes('not verified')) {
           localStorage.setItem('pendingEmail', email);
@@ -43,7 +48,7 @@ const UserLogin = () => {
       <main className="flex-1 container mx-auto px-4 py-16">
         <div className="max-w-lg mx-auto bg-gray-800/70 border border-gray-700 rounded-2xl p-8 shadow-lg">
           <h1 className="text-3xl font-semibold mb-2">Welcome back</h1>
-          <p className="text-gray-400 mb-8">Log in to continue your CampusVoice journey.</p>
+          <p className="text-gray-400 mb-8">Log in to continue your CampusConnect journey.</p>
           <form className="space-y-5" onSubmit={handleSubmit}>
             <div>
               <label className="block text-sm text-gray-300 mb-2">Email</label>

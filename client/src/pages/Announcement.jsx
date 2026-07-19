@@ -8,7 +8,7 @@ import Loader from '../components/Loader';
 import { useAppContext } from '../context/AppContext';
 import toast from 'react-hot-toast';
 
-const Blog = () => {
+const Announcement = () => {
   const { id } = useParams();
   const { axios, user, role } = useAppContext();
   const navigate = useNavigate();
@@ -17,10 +17,10 @@ const Blog = () => {
   const [comments, setComments] = useState([]);
   const [content, setContent] = useState('');
 
-  const fetchBlogData = async () => {
+  const fetchAnnouncementData = async () => {
     try {
-      const { data } = await axios.get(`/api/blog/${id}`);
-      data.success ? setData(data.blog) : toast.error(data.message);
+      const { data } = await axios.get(`/api/announcement/${id}`);
+      data.success ? setData(data.announcement) : toast.error(data.message);
     } catch (error) {
       toast.error(error.message);
     }
@@ -28,7 +28,7 @@ const Blog = () => {
 
   const fetchComments = async () => {
     try {
-      const { data } = await axios.post('/api/blog/comments', { blogId: id });
+      const { data } = await axios.post('/api/announcement/comments', { announcementId: id });
       if (data.success) {
         setComments(data.comments);
       } else {
@@ -43,12 +43,12 @@ const Blog = () => {
     e.preventDefault();
     try {
       const commentData = {
-        blog: id,
+        announcement: id,
         content: content,
         name: role === 'admin' ? 'Admin' : user.name,
       };
 
-      const { data } = await axios.post('/api/blog/add-comment', commentData);
+      const { data } = await axios.post('/api/announcement/add-comment', commentData);
 
       if (data.success) {
         toast.success(data.message);
@@ -64,7 +64,7 @@ const Blog = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    fetchBlogData();
+    fetchAnnouncementData();
     fetchComments();
   }, []);
 
@@ -145,4 +145,4 @@ const Blog = () => {
   ) : <Loader />;
 };
 
-export default Blog;
+export default Announcement;

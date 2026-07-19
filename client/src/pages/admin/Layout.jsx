@@ -20,7 +20,7 @@ const Layout = () => {
               onClick={() => navigate('/')}
               className="text-sm px-6 py-2.5 bg-primary text-white rounded-full cursor-pointer hover:bg-primary/90 transition-colors duration-300"
             >
-              View Blogs
+              View Announcements
             </button>
             <button
               onClick={logout}

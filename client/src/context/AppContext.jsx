@@ -3,7 +3,8 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom"
 import toast from "react-hot-toast";
 
-axios.defaults.baseURL = "https://the-campusvoice-server.vercel.app/";
+export const backendUrl = import.meta.env.VITE_BASE_URL || "http://localhost:3000";
+axios.defaults.baseURL = backendUrl;
 
 const AppContext = createContext();
 
@@ -14,7 +15,7 @@ export const AppProvider = ({ children }) => {
     const [token,setToken] = useState(null)
     const [role, setRole] = useState(null)
     const [user, setUser] = useState(null)
-    const [blogs,setBlogs] = useState([])
+    const [announcements,setAnnouncements] = useState([])
     const [input,setInput] = useState("")
 
     const setAuth = (nextToken, nextRole) => {
@@ -43,10 +44,10 @@ export const AppProvider = ({ children }) => {
         }
     };
 
-    const fetchBlogs = async () => {
+    const fetchAnnouncements = async () => {
         try {
-            const {data} = await axios.get('/api/blog/all');
-            data.success ? setBlogs(data.blogs) : toast.error(data.message);
+            const {data} = await axios.get('/api/announcement/all');
+            data.success ? setAnnouncements(data.announcements) : toast.error(data.message);
         } catch (error) { 
             const msg = error?.response?.data?.message || error.message;
             toast.error(msg);
@@ -55,7 +56,7 @@ export const AppProvider = ({ children }) => {
     } 
 
     useEffect(() => {
-        fetchBlogs();
+        fetchAnnouncements();
         const storedToken = localStorage.getItem('token')
         const storedRole = localStorage.getItem('role')
         if(storedToken) {
@@ -68,7 +69,7 @@ export const AppProvider = ({ children }) => {
         }
     },[])
     const value = {
-        axios,navigate, token,setToken, role,setRole, user,setUser, setAuth, fetchMe, blogs,setBlogs,input,setInput
+        axios,navigate, token,setToken, role,setRole, user,setUser, setAuth, fetchMe, announcements,setAnnouncements,input,setInput, backendUrl
     }
 
     return (

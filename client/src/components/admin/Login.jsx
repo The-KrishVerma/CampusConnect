@@ -28,7 +28,7 @@ const Login = () => {
       <div className="w-full max-w-md p-6 sm:p-8 space-y-6 sm:space-y-8 bg-gray-800 rounded-2xl shadow-lg">
         <div className="text-center">
           <h1 className="text-3xl sm:text-4xl font-bold text-red-500">Admin Login</h1>
-          <p className="text-gray-400">Sign in to manage your blog</p>
+          <p className="text-gray-400">Sign in to manage your announcement</p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
           <div>

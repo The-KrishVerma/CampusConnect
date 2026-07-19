@@ -19,7 +19,7 @@ const Navbar = () => {
           <div
             className="text-2xl font-bold text-white"
           >
-            CampusVoice
+            CampusConnect
           </div>
           <div className="flex items-center gap-3">
             {!token && (
@@ -43,12 +43,6 @@ const Navbar = () => {
                     Login
                   </button>
                 )}
-                <button
-                  onClick={() => navigate('/admin')}
-                  className="text-xs text-gray-400 hover:text-white transition-colors"
-                >
-                  Admin
-                </button>
               </>
             )}
             {token && role === 'admin' && (
@@ -78,7 +72,7 @@ const Navbar = () => {
                       cursor-pointer bg-primary text-white px-6 py-2.5 hover:bg-primary/90
                       transition-colors duration-300 shadow-md hover:shadow-lg"
                   >
-                    View Blogs
+                    Home
                   </button>
                 )}
                 <button

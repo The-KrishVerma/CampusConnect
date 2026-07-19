@@ -21,33 +21,65 @@ const Sidebar = () => {
         </NavLink>
 
         <NavLink
-          to='/admin/addBlog'
+          to='/admin/addAnnouncement'
           className={({ isActive }) =>
             `flex flex-col items-center justify-center gap-1 py-3 md:flex-row md:justify-start md:gap-4 md:py-3.5 md:px-6 cursor-pointer transition-colors duration-200 ${isActive ? activeLinkClass : inactiveLinkClass}`
           }
         >
           <img src={assets.add_icon} alt="" className="w-5 icon-white" />
-          <p className="font-medium text-xs md:text-base">Add Blog</p>
+          <p className="font-medium text-xs md:text-base">Add Announcement</p>
         </NavLink>
 
+
+
         <NavLink
-          to='/admin/listBlog'
+          to='/admin/bookings'
           className={({ isActive }) =>
             `flex flex-col items-center justify-center gap-1 py-3 md:flex-row md:justify-start md:gap-4 md:py-3.5 md:px-6 cursor-pointer transition-colors duration-200 ${isActive ? activeLinkClass : inactiveLinkClass}`
           }
         >
           <img src={assets.list_icon} alt="" className="w-5 icon-white" />
-          <p className="font-medium text-xs md:text-base">Blog List</p>
+          <p className="font-medium text-xs md:text-base">Manage Bookings</p>
         </NavLink>
 
         <NavLink
-          to='/admin/comments'
+          to='/admin/complaints'
           className={({ isActive }) =>
             `flex flex-col items-center justify-center gap-1 py-3 md:flex-row md:justify-start md:gap-4 md:py-3.5 md:px-6 cursor-pointer transition-colors duration-200 ${isActive ? activeLinkClass : inactiveLinkClass}`
           }
         >
-          <img src={assets.comment_icon} alt="" className="w-5 icon-white" />
-          <p className="font-medium text-xs md:text-base">Comments</p>
+          <img src={assets.list_icon} alt="" className="w-5 icon-white" />
+          <p className="font-medium text-xs md:text-base">Manage Complaints</p>
+        </NavLink>
+
+        <NavLink
+          to='/admin/library'
+          className={({ isActive }) =>
+            `flex flex-col items-center justify-center gap-1 py-3 md:flex-row md:justify-start md:gap-4 md:py-3.5 md:px-6 cursor-pointer transition-colors duration-200 ${isActive ? activeLinkClass : inactiveLinkClass}`
+          }
+        >
+          <img src={assets.list_icon} alt="" className="w-5 icon-white" />
+          <p className="font-medium text-xs md:text-base">Manage Library</p>
+        </NavLink>
+
+        <NavLink
+          to='/admin/fees'
+          className={({ isActive }) =>
+            `flex flex-col items-center justify-center gap-1 py-3 md:flex-row md:justify-start md:gap-4 md:py-3.5 md:px-6 cursor-pointer transition-colors duration-200 ${isActive ? activeLinkClass : inactiveLinkClass}`
+          }
+        >
+          <img src={assets.list_icon} alt="" className="w-5 icon-white" />
+          <p className="font-medium text-xs md:text-base">Manage Fees</p>
+        </NavLink>
+
+        <NavLink
+          to='/admin/courses'
+          className={({ isActive }) =>
+            `flex flex-col items-center justify-center gap-1 py-3 md:flex-row md:justify-start md:gap-4 md:py-3.5 md:px-6 cursor-pointer transition-colors duration-200 ${isActive ? activeLinkClass : inactiveLinkClass}`
+          }
+        >
+          <img src={assets.list_icon} alt="" className="w-5 icon-white" />
+          <p className="font-medium text-xs md:text-base">Manage Courses</p>
         </NavLink>
       </nav>
     </aside>

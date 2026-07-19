@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 
 const Comments = () => {
   const [comments, setComments] = useState([]);
-  const [filter, setFilter] = useState('Not Approved');
+  const [filter, setFilter] = useState('All');
   const [search, setSearch] = useState('');
   const { axios } = useAppContext();
 
@@ -31,12 +31,14 @@ const Comments = () => {
 
   const filteredComments = comments
     .filter((comment) => {
+      if (filter === 'All') return true;
       if (filter === 'Approved') return comment.isApproved === true;
-      return comment.isApproved === false;
+      if (filter === 'Pending') return comment.isApproved === false;
+      return true;
     })
     .filter((comment) => {
       if (!search) return true;
-      const haystack = `${comment?.blog?.title || ''} ${comment?.name || ''} ${comment?.content || ''}`.toLowerCase();
+      const haystack = `${comment?.announcement?.title || ''} ${comment?.name || ''} ${comment?.content || ''}`.toLowerCase();
       return haystack.includes(search.toLowerCase());
     });
 
@@ -57,13 +59,10 @@ const Comments = () => {
             placeholder="Search comments..."
             className="bg-gray-800 border border-gray-700 text-sm rounded-full px-4 py-2 text-gray-300 outline-none focus:border-primary"
           />
-          <div className='flex gap-4'>
-          <button onClick={() => setFilter('Approved')} className={getButtonClass('Approved')}>
-            Approved
-          </button>
-          <button onClick={() => setFilter('Not Approved')} className={getButtonClass('Not Approved')}>
-            Not Approved
-          </button>
+          <div className='flex flex-wrap gap-3'>
+            <button onClick={() => setFilter('All')} className={getButtonClass('All')}>All</button>
+            <button onClick={() => setFilter('Approved')} className={getButtonClass('Approved')}>Approved</button>
+            <button onClick={() => setFilter('Pending')} className={getButtonClass('Pending')}>Pending</button>
           </div>
         </div>
       </div>
@@ -72,7 +71,7 @@ const Comments = () => {
         <table className='w-full text-sm text-left text-gray-400'>
           <thead className='text-xs text-gray-400 uppercase bg-gray-800 border-b-2 border-gray-700'>
             <tr>
-              <th scope='col' className='px-6 py-4'>Blog Title & Comment</th>
+              <th scope='col' className='px-6 py-4'>Announcement Title & Comment</th>
               <th scope='col' className='px-6 py-4 max-sm:hidden'>Date</th>
               <th scope='col' className='px-6 py-4'>Action</th>
             </tr>
